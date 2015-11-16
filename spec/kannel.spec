@@ -21,10 +21,6 @@ Source3:        %{name}.logrotate
 
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/useradd
-Requires(post): /sbin/chkconfig
-Requires(preun): /sbin/chkconfig
-Requires(preun): /sbin/service
-Requires(postun): /sbin/service
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: pcre-devel openssl-devel zlib-devel
@@ -59,22 +55,11 @@ rm -rf %{buildroot}
 %{_sbindir}/groupadd -r %{kannel_group} 2>/dev/null || :
 %{_sbindir}/useradd -g %{kannel_group} -d %{kannel_home} -s /sbin/nologin -r %{kannel_user} 2>/dev/null || :
 
-%post
-/sbin/chkconfig --add kannel
-
-%preun
-if [ "$1" -eq 0 ]; then
-    /sbin/service kannel stop >/dev/null 2>&1
-    /sbin/chkconfig --del kannel
-fi
-
-%postun
-if [ "$1" -ge 1 ]; then
-    /sbin/service kannel condrestart >/dev/null 2>&1 || :
-fi
-
 %files
 %defattr(-, root, root, 0755)
+%{_bindir}/*
+%{_sbindir}/*
+%{_mandir}/man?/*
 %{_includedir}/kannel/
 %dir %{_libdir}/kannel/
 %{_libdir}/kannel/*.a
