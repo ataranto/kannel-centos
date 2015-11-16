@@ -16,7 +16,7 @@ URL:            http://www.kannel.org/
 Source0:        https://redmine.kannel.org/attachments/download/198/gateway-1.5.0.tar.gz
 
 Source1:        %{name}.init
-Source2:        %{name}.config
+Source2:        %{name}.conf
 Source3:        %{name}.logrotate
 
 Requires(pre):  %{_sbindir}/groupadd
@@ -75,9 +75,6 @@ fi
 
 %files
 %defattr(-, root, root, 0755)
-%doc AUTHORS COPYING ChangeLog NEWS README STATUS
-%doc contrib/*
-%doc doc/*
-%{_bindir}/*
-%{_sbindir}/*
-%{_mandir}/man?/*
+%{_includedir}/kannel/
+%dir %{_libdir}/kannel/
+%{_libdir}/kannel/*.a
